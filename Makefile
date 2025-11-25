@@ -4,7 +4,7 @@
 NAME = so_long
 
 # Sources
-SRC = main.c
+SRC = so_long.c map_checker.c gnl/get_next_line.c gnl/get_next_line_utils.c
 
 # Dossier MLX
 MLX_DIR = mlx
@@ -33,7 +33,7 @@ mlx:
 	make -C $(MLX_DIR)
 
 # Compile le projet
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(OBJGNL)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 # Compile les .c en .o
