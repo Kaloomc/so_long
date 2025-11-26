@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/25 19:40:04 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/26 17:48:46 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,40 @@
 # include <stdio.h>
 // gros con
 
-int		get_line_nb(char *file_name);
-char	**get_map(char *file_name);
+typedef struct s_game
+{
+	void	*mlx;
+	void	*win;
+
+	char **map; // tableau 2D contenant la map .ber
+	int map_w;  // largeur de la map en cases
+	int map_h;  // hauteur de la map en cases
+
+	int win_w; // largeur de la fenêtre en pixels
+	int win_h; // hauteur de la fenêtre en pixels
+
+	int player_x; // position du joueur (en cases)
+	int		player_y;
+
+	void	*floorImg;
+	void	*roofImg;
+	void	*wallLeftImg;
+	void	*wallRightImg;
+	void	*fullImg;
+	void	*bgImg;
+
+	void	*corner3SidesRImg;
+	void	*corner3SidesLImg;
+	void	*corner3SidesUImg;
+	void	*corner3SidesDImg;
+	void	*corner4SidesImg;
+
+}			t_game;
+
+int			get_line_nb(char *file_name);
+char		**get_map(char *file_name);
+void		load_img(t_game *game);
+void		texture_map(t_game *game);
 
 # define WIDTH 800
 # define HEIGHT 600

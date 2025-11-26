@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/25 19:21:53 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/26 16:45:01 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,23 @@ int	close_window(int keycode, void *param)
 	return (0);
 }
 
+
 int	main(void)
 {
-	char	**map;
-	int		i;
+	t_game	game;
 
-	// void	*mlx;
-	// void	*win;
-	map = get_map("map.ber");
-	i = 0;
-	if (!map)
-	{
-		printf("Erreur de map\n");
-		return (0);
-	}
-	while (map[i])
-		printf("%s", map[i++]);
-	/*
-	// Initialisation MLX
-	mlx = mlx_init();
-	if (!mlx)
+	game.map = get_map("map.ber");
+	if (!game.map)
+		return (printf("Erreur de map\n"), 1);
+	game.mlx = mlx_init();
+	if (!game.mlx)
 		return (1);
-		// Création de la fenêtre
-		win = mlx_new_window(mlx, WIDTH, HEIGHT, "so_long");
-		if (!win)
+	load_img(&game); // ← IMPORTANT : passer l'adresse
+	game.win = mlx_new_window(game.mlx, WIDTH, HEIGHT, "so_long");
+	if (!game.win)
 		return (1);
-		// Hook clavier pour fermer la fenêtre avec ESC
-		mlx_hook(win, 2, 1L << 0, close_window, NULL); // KeyPress
-		// Boucle principale
-		mlx_loop(mlx);
-	*/
+	texture_map(&game);
+	mlx_hook(game.win, 2, 1L << 0, close_window, NULL);
+	mlx_loop(game.mlx);
 	return (0);
 }
