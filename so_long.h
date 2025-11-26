@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/26 17:48:46 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/26 22:00:01 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,22 @@ typedef struct s_game
 	void	*corner3SidesUImg;
 	void	*corner3SidesDImg;
 	void	*corner4SidesImg;
+	void	*platformV;
+	void	*platformH;
+
+	void	*SideUL;
+	void	*SideUR;
+	void	*SideDL;
+	void	*SideDR;
+	void	*DiagonalUL;
+	void	*DiagonalUR;
+	void	*DiagonalDL;
+	void	*DiagonalDR;
+
+	void	*DiagonalLeft;
+	void	*DiagonalRight;
+	void	*DiagonalDown;
+	void	*DiagonalUp;
 
 }			t_game;
 
@@ -58,6 +74,7 @@ int			get_line_nb(char *file_name);
 char		**get_map(char *file_name);
 void		load_img(t_game *game);
 void		texture_map(t_game *game);
+void		*get_texture_diagonal(t_game *game, int x, int y);
 
 # define WIDTH 800
 # define HEIGHT 600
