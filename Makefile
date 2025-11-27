@@ -4,14 +4,18 @@
 NAME = so_long
 
 # Sources
-SRC = so_long.c map_checker.c load_texture.c apply_texture_wall.c apply_texture_diagonal.c gnl/get_next_line.c gnl/get_next_line_utils.c
+SRC = so_long.c map_checker.c \
+		load_texture.c apply_texture_wall.c \
+		apply_texture_diagonal.c apply_texture.c \
+		unload_texture.c \
+		gnl/get_next_line.c gnl/get_next_line_utils.c
 
 # Dossier MLX
 MLX_DIR = mlx
 
 # Compilateur et flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(MLX_DIR)
+CFLAGS = -Wall -Wextra -Werror -g -I$(MLX_DIR)
 
 # Librairies
 LIBS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm

@@ -6,25 +6,11 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/26 22:01:14 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/27 19:46:44 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	load_wall(t_game *game, int *width, int *height)
-{
-	game->floorImg = mlx_xpm_file_to_image(game->mlx, "textures/Wall/Floor.xpm",
-			width, height);
-	game->roofImg = mlx_xpm_file_to_image(game->mlx, "textures/Wall/Roof.xpm",
-			width, height);
-	game->wallLeftImg = mlx_xpm_file_to_image(game->mlx,
-			"textures/Wall/Left.xpm", width, height);
-	game->wallRightImg = mlx_xpm_file_to_image(game->mlx,
-			"textures/Wall/Right.xpm", width, height);
-	game->fullImg = mlx_xpm_file_to_image(game->mlx,
-			"textures/Terrain_wall_full.xpm", width, height);
-}
 
 void	load_diagonal(t_game *game, int *width, int *height)
 {
@@ -55,7 +41,7 @@ void	load_corner(t_game *game, int *width, int *height)
 	game->corner3SidesDImg = mlx_xpm_file_to_image(game->mlx,
 			"textures/3 Side/Down.xpm", width, height);
 	game->corner3SidesUImg = mlx_xpm_file_to_image(game->mlx,
-			"textures/3 side/Up.xpm", width, height);
+			"textures/3 Side/Up.xpm", width, height);
 	game->platformV = mlx_xpm_file_to_image(game->mlx,
 			"textures/2 Side/Vertical.xpm", width, height);
 	game->platformH = mlx_xpm_file_to_image(game->mlx,
@@ -63,25 +49,60 @@ void	load_corner(t_game *game, int *width, int *height)
 	game->SideUL = mlx_xpm_file_to_image(game->mlx,
 			"textures/2 Side/UpperLeft.xpm", width, height);
 	game->SideUR = mlx_xpm_file_to_image(game->mlx,
-			"textures/2 side/UpperRight.xpm", width, height);
+			"textures/2 Side/UpperRight.xpm", width, height);
 	game->SideDL = mlx_xpm_file_to_image(game->mlx,
 			"textures/2 Side/DownLeft.xpm", width, height);
 	game->SideDR = mlx_xpm_file_to_image(game->mlx,
 			"textures/2 Side/DownRight.xpm", width, height);
 }
 
-void	load_img(t_game *game)
+void	load_all(t_game *game, int *width, int *height)
+{
+	game->floorImg = mlx_xpm_file_to_image(game->mlx, "textures/Wall/Floor.xpm",
+			width, height);
+	game->roofImg = mlx_xpm_file_to_image(game->mlx, "textures/Wall/Roof.xpm",
+			width, height);
+	game->wallLeftImg = mlx_xpm_file_to_image(game->mlx,
+			"textures/Wall/Left.xpm", width, height);
+	game->wallRightImg = mlx_xpm_file_to_image(game->mlx,
+			"textures/Wall/Right.xpm", width, height);
+	game->fullImg = mlx_xpm_file_to_image(game->mlx,
+			"textures/Terrain_wall_full.xpm", width, height);
+	game->playerIMG = mlx_xpm_file_to_image(game->mlx,
+			"textures/Character/Idle.xpm", width, height);
+	game->coinIMG = mlx_xpm_file_to_image(game->mlx, "textures/coin.xpm", width,
+			height);
+	game->chestIMG = mlx_xpm_file_to_image(game->mlx, "textures/Chest.xpm",
+			width, height);
+	game->bgImg = mlx_xpm_file_to_image(game->mlx, "textures/Background.xpm",
+			width, height);
+	game->corner4SidesImg = mlx_xpm_file_to_image(game->mlx,
+			"textures/4sides.xpm", width, height);
+	load_corner(game, width, height);
+	load_diagonal(game, width, height);
+}
+
+int	load_img(t_game *game)
 {
 	int	width;
 	int	height;
 
 	width = 32;
 	height = 32;
-	load_wall(game, &width, &height);
-	load_corner(game, &width, &height);
-	load_diagonal(game, &width, &height);
-	game->bgImg = mlx_xpm_file_to_image(game->mlx, "textures/Background.xpm",
-			&width, &height);
-	game->corner4SidesImg = mlx_xpm_file_to_image(game->mlx,
-			"textures/4sides.xpm", &width, &height);
+	load_all(game, &width, &height);
+	if (!game->playerIMG || !game->coinIMG || !game->chestIMG || !game->floorImg
+		|| !game->roofImg || !game->wallLeftImg || !game->wallRightImg
+		|| !game->fullImg || !game->bgImg || !game->corner3SidesRImg
+		|| !game->corner3SidesLImg || !game->corner3SidesUImg
+		|| !game->corner3SidesDImg || !game->corner4SidesImg || !game->platformV
+		|| !game->platformH || !game->SideUL || !game->SideUR || !game->SideDL
+		|| !game->SideDR || !game->DiagonalUL || !game->DiagonalUR
+		|| !game->DiagonalDL || !game->DiagonalDR || !game->DiagonalLeft
+		|| !game->DiagonalRight || !game->DiagonalDown || !game->DiagonalUp)
+	{
+		write(2, "Error\nFailed to load texture\n", 30);
+		free_all(game, 1);
+		return (0);
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/26 22:00:01 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/27 19:45:52 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define SO_LONG_H
 
 # include "gnl/get_next_line.h"
-# include "mlx.h"
+# include "mlx/mlx.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <fcntl.h>
@@ -38,6 +38,13 @@ typedef struct s_game
 
 	int player_x; // position du joueur (en cases)
 	int		player_y;
+	void	*playerIMG;
+	int		step;
+
+	int		RemaningCoin;
+	void	*coinIMG;
+
+	void	*chestIMG;
 
 	void	*floorImg;
 	void	*roofImg;
@@ -71,12 +78,13 @@ typedef struct s_game
 }			t_game;
 
 int			get_line_nb(char *file_name);
-char		**get_map(char *file_name);
-void		load_img(t_game *game);
+void		get_map(char *file_name, t_game *game);
+int			load_img(t_game *game);
 void		texture_map(t_game *game);
-void		*get_texture_diagonal(t_game *game, int x, int y);
-
-# define WIDTH 800
-# define HEIGHT 600
+void		*get_wall_texture(t_game *game, int x, int y);
+void		*get_diagonal_texture(t_game *game, int x, int y);
+void		texture_player(t_game *game, int vertical, int horizontal);
+void		free_all(t_game *game, int specifier);
+void		free_map(char **map);
 
 #endif

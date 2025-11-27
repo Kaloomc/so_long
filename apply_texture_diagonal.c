@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/26 22:02:24 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/27 16:35:42 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	*get_texture(t_game *game, int ul, int dl, int ur, int dr)
 	return (game->fullImg);
 }
 
-void	*get_texture_diagonal(t_game *game, int x, int y)
+void	*get_diagonal_texture(t_game *game, int x, int y)
 {
 	int	upLeft;
 	int	downLeft;

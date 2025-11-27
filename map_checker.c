@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:35:07 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/25 19:35:24 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/27 19:05:47 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,30 @@ char	**read_map(char *file_name)
 	return (map);
 }
 
-char	**get_map(char *file_name)
+void	get_map(char *file_name, t_game *game)
 {
 	char **map;
+	int x;
+	int y;
 
 	map = read_map(file_name);
 	if (!map || !is_rectangular(map))
-		return (NULL);
-	return (map);
+	{
+		if (!map)
+			printf("Error\nUnreadable Map\n");
+		else
+			printf("Error\nNot Rectangular Map\n");
+		free_map(map);
+		(*game).map = NULL;
+		return ;
+	}
+	y = 0;
+	x = 0;
+	while (map[y])
+		y++;
+	while (map[1][x] != '\n')
+		x++;
+	(*game).map = map;
+	(*game).map_h = y;
+	(*game).map_w = x;
 }

@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/26 21:45:17 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/27 17:25:23 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ static void	*get_texture(t_game *game, int u, int d, int l, int r)
 		return (game->corner3SidesUImg);
 	if (u && !d && !l && !r)
 		return (game->corner3SidesDImg);
-	return (game->fullImg);
+	return (game->corner4SidesImg);
 }
 
-static void	*get_wall_texture(t_game *game, int x, int y)
+void	*get_wall_texture(t_game *game, int x, int y)
 {
 	int	up;
 	int	down;
@@ -73,31 +73,8 @@ static void	*get_wall_texture(t_game *game, int x, int y)
 	right = is_wall(game, x + 1, y);
 	wall_count = up + down + left + right;
 	if (wall_count == 4)
-		return (get_texture_diagonal(game, x, y));
+		return (get_diagonal_texture(game, x, y));
 	if (wall_count == 2)
 		return (get_texture2(game, up, down, left, right));
 	return (get_texture(game, up, down, left, right));
-}
-
-void	texture_map(t_game *game)
-{
-	int x;
-	int y;
-	void *img;
-
-	y = 0;
-	while (game->map[y])
-	{
-		x = 0;
-		while (game->map[y][x] && game->map[y][x] != '\n')
-		{
-			if (game->map[y][x] == '1')
-				img = get_wall_texture(game, x, y);
-			else
-				img = game->bgImg;
-			mlx_put_image_to_window(game->mlx, game->win, img, 32 * x, 32 * y);
-			x++;
-		}
-		y++;
-	}
 }
