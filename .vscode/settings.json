@@ -2,6 +2,7 @@
 	"files.associations": {
 		"format": "c",
 		"random": "c",
-		"so_long.h": "c"
+		"so_long.h": "c",
+		"floodfill.C": "cpp"
 	}
 }

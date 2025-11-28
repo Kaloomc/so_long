@@ -6,106 +6,106 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:35:07 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/27 19:05:47 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/28 00:48:51 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+#include <stdlib.h>
+#include <unistd.h>
 
-int	ft_linelen(char *line)
+void	player_position(t_game *game, char **map)
 {
-	int	i;
+	int	x;
+	int	y;
 
-	i = 0;
-	while (line[i] && line[i] != '\n')
-		i++;
-	return (i);
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'P')
+			{
+				game->player_x = x;
+				game->player_y = y;
+				return ;
+			}
+			x++;
+		}
+		y++;
+	}
 }
 
-int	is_rectangular(char **map)
+int	check_elements(char **map, t_direction obj, int y)
 {
-	int	i;
+	int	x;
 
-	i = 1;
-	while (map[i])
+	while (map[y])
 	{
-		if (ft_linelen(map[i]) != ft_linelen(map[i - 1]))
-			return (0);
-		i++;
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'P')
+				obj.p++;
+			else if (map[y][x] == 'E')
+				obj.e++;
+			else if (map[y][x] == 'C')
+				obj.c++;
+			x++;
+		}
+		y++;
+	}
+	if (obj.p != 1 || obj.e != 1 || obj.c < 1)
+		ft_printf("Error\nThere is too few/not enough elements\n");
+	return (obj.p == 1 && obj.e == 1 && obj.c >= 1);
+}
+
+int	check_map_walls(char **map)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x] && map[y][x] != '\n')
+		{
+			if (((y == 0 || !map[y + 1]) && map[y][x] != '1') || ((x == 0
+						|| !map[y][x + 1] || map[y][x + 1] == '\n')
+					&& map[y][x] != '1'))
+			{
+				ft_printf("Error\nMap not surrounded by walls\n");
+				return (0);
+			}
+			x++;
+		}
+		y++;
 	}
 	return (1);
 }
-int	get_line_nb(char *file_name)
+
+int	check_map(char **map, t_game *game)
 {
-	char	*line;
-	int		i;
-	int		fd;
+	t_direction	dir;
 
-	i = 0;
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	line = get_next_line(fd);
-	while (line)
+	dir.p = 0;
+	dir.e = 0;
+	dir.c = 0;
+	if (!is_rectangular(map) || !check_map_walls(map) || !check_elements(map,
+			dir, 0))
+		return (0);
+	player_position(game, map);
+	if ((!is_map_solvable(map, game->map_h, game->player_x, game->player_y)))
 	{
-		free(line);
-		line = get_next_line(fd);
-		i++;
+		ft_printf("Error\nMap unsolvable\n");
+		return (0);
 	}
-	close(fd);
-	return (i);
-}
-
-char	**read_map(char *file_name)
-{
-	int		fd;
-	int		nb_line;
-	char	**map;
-	int		i;
-
-	i = 0;
-	nb_line = get_line_nb(file_name);
-	if (nb_line <= 2)
-		return (NULL);
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-		return (NULL);
-	map = malloc(sizeof(char *) * (nb_line + 1));
-	if (!map)
+	if (game->map_w > 60 || game->map_h > 30)
 	{
-		close(fd);
-		return (NULL);
+		ft_printf("Error\nMap too big\n");
+		return (0);
 	}
-	while (i <= nb_line)
-		map[i++] = get_next_line(fd);
-	close(fd);
-	return (map);
-}
-
-void	get_map(char *file_name, t_game *game)
-{
-	char **map;
-	int x;
-	int y;
-
-	map = read_map(file_name);
-	if (!map || !is_rectangular(map))
-	{
-		if (!map)
-			printf("Error\nUnreadable Map\n");
-		else
-			printf("Error\nNot Rectangular Map\n");
-		free_map(map);
-		(*game).map = NULL;
-		return ;
-	}
-	y = 0;
-	x = 0;
-	while (map[y])
-		y++;
-	while (map[1][x] != '\n')
-		x++;
-	(*game).map = map;
-	(*game).map_h = y;
-	(*game).map_w = x;
+	return (1);
 }

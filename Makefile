@@ -1,57 +1,61 @@
-# Makefile pour so_long sur Linux
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/11/28 00:46:42 by fgarnier          #+#    #+#              #
+#    Updated: 2025/11/28 00:47:22 by fgarnier         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-# Nom de l'exécutable
+
 NAME = so_long
 
-# Sources
-SRC = so_long.c map_checker.c \
-		load_texture.c apply_texture_wall.c \
-		apply_texture_diagonal.c apply_texture.c \
-		unload_texture.c \
-		gnl/get_next_line.c gnl/get_next_line_utils.c
+SRC = so_long.c map_checker.c map_reader.c\
+        load_texture.c apply_texture_wall.c \
+        apply_texture_diagonal.c apply_texture.c \
+        unload_texture.c floodfill.c\
+        gnl/get_next_line.c gnl/get_next_line_utils.c
 
-# Dossier MLX
 MLX_DIR = mlx
+PRINTF_DIR = ft_printf
 
-# Compilateur et flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -I$(MLX_DIR)
+CFLAGS = -Wall -Wextra -Werror -g -I$(MLX_DIR) -I$(PRINTF_DIR)
 
-# Librairies
-LIBS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+LIBS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -L$(PRINTF_DIR) -lftprintf
 
-# Objet
+
 OBJ = $(SRC:.c=.o)
 
-# -------------------------------------------------
-# Règles
-# -------------------------------------------------
+all: mlx printf $(NAME)
 
-all: mlx $(NAME)
-
-# Compile MLX si elle n'existe pas
 mlx:
 	if [ ! -d "$(MLX_DIR)" ]; then \
 		git clone https://github.com/42Paris/minilibx-linux.git $(MLX_DIR); \
 	fi
 	make -C $(MLX_DIR)
 
-# Compile le projet
-$(NAME): $(OBJ) $(OBJGNL)
+printf:
+	make -C $(PRINTF_DIR)
+	
+$(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
-# Compile les .c en .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Nettoyage
 clean:
 	rm -f $(OBJ)
 	make -C $(MLX_DIR) clean
+	make -C $(PRINTF_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	make -C $(PRINTF_DIR) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re mlx
+.PHONY: all clean fclean re mlx printf
