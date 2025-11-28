@@ -6,7 +6,7 @@
 #    By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/28 09:54:52 by fgarnier          #+#    #+#              #
-#    Updated: 2025/11/28 09:58:24 by fgarnier         ###   ########.fr        #
+#    Updated: 2025/11/28 20:16:31 by fgarnier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,15 @@ PRINTF_DIR  = ft_printf
 PRINTF_LIB  = $(PRINTF_DIR)/libftprintf.a
 
 SRCS        = so_long.c \
-              load_texture.c \
-              unload_texture.c \
+              load_texture.c  \
+			  load_texture2.c  \
+			  load.c  \
+			  unload_texture.c \
+			  unload.c \
               apply_texture.c \
-              apply_texture_wall.c \
-              apply_texture_diagonal.c \
+              get_texture_wall.c \
+			  get_texture_wall2.c \
+			  get_texture_wall3.c \
               map_checker.c \
               map_reader.c \
               floodfill.c \

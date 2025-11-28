@@ -6,23 +6,11 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:25:38 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 01:07:21 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/28 20:08:44 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	free_map(char **map)
-{
-	int	i;
-
-	i = 0;
-	if (!map)
-		return ;
-	while (map[i])
-		free(map[i++]);
-	free(map);
-}
 
 static void	destroy_image_if(t_game *game, void **img)
 {
@@ -33,62 +21,75 @@ static void	destroy_image_if(t_game *game, void **img)
 	*img = NULL;
 }
 
+void	destroy_images3(t_game *game)
+{
+	if (!game)
+		return ;
+	destroy_image_if(game, &game->corner.dl);
+	destroy_image_if(game, &game->corner.dl_diag_ur);
+	destroy_image_if(game, &game->corner.down);
+	destroy_image_if(game, &game->corner.dr);
+	destroy_image_if(game, &game->corner.dr_diag_ul);
+	destroy_image_if(game, &game->corner.left);
+	destroy_image_if(game, &game->corner.right);
+	destroy_image_if(game, &game->corner.ul);
+	destroy_image_if(game, &game->corner.up);
+	destroy_image_if(game, &game->corner.ur_diag_dl);
+	destroy_image_if(game, &game->corner.ur);
+	destroy_image_if(game, &game->corner.up_diag_dr);
+	destroy_image_if(game, &game->player_img);
+	destroy_image_if(game, &game->player_flip_img);
+	destroy_image_if(game, &game->coin_img);
+	destroy_image_if(game, &game->chest_img);
+	destroy_image_if(game, &game->bg_img);
+	destroy_image_if(game, &game->wall.alone);
+}
+
+void	destroy_images2(t_game *game)
+{
+	if (!game)
+		return ;
+	destroy_image_if(game, &game->diagonal.all);
+	destroy_image_if(game, &game->diagonal.dl);
+	destroy_image_if(game, &game->diagonal.d);
+	destroy_image_if(game, &game->diagonal.down_ur);
+	destroy_image_if(game, &game->diagonal.dr);
+	destroy_image_if(game, &game->diagonal.left);
+	destroy_image_if(game, &game->diagonal.left_dr);
+	destroy_image_if(game, &game->diagonal.left_ur);
+	destroy_image_if(game, &game->diagonal.right);
+	destroy_image_if(game, &game->diagonal.right_ul);
+	destroy_image_if(game, &game->diagonal.ul);
+	destroy_image_if(game, &game->diagonal.ul_dr);
+	destroy_image_if(game, &game->diagonal.up);
+	destroy_image_if(game, &game->diagonal.ur);
+	destroy_image_if(game, &game->diagonal.ur_dl);
+	destroy_images3(game);
+}
+
 void	destroy_images(t_game *game)
 {
 	if (!game)
 		return ;
-	destroy_image_if(game, &game->floor_img);
-	destroy_image_if(game, &game->roof_img);
-	destroy_image_if(game, &game->wallleft_img);
-	destroy_image_if(game, &game->wallright_img);
-	destroy_image_if(game, &game->corner3sidesr_img);
-	destroy_image_if(game, &game->corner3sidesl_img);
-	destroy_image_if(game, &game->corner3sidesu_img);
-	destroy_image_if(game, &game->corner3sidesd_img);
-	destroy_image_if(game, &game->corner4sides_img);
-	destroy_image_if(game, &game->platform_v);
-	destroy_image_if(game, &game->platform_h);
-	destroy_image_if(game, &game->side_ul);
-	destroy_image_if(game, &game->side_ur);
-	destroy_image_if(game, &game->side_dl);
-	destroy_image_if(game, &game->side_dr);
-	destroy_image_if(game, &game->diagonal_ul);
-	destroy_image_if(game, &game->diagonal_ur);
-	destroy_image_if(game, &game->diagonal_dl);
-	destroy_image_if(game, &game->diagonal_dr);
-	destroy_image_if(game, &game->diagonalleft);
-	destroy_image_if(game, &game->diagonalright);
-	destroy_image_if(game, &game->diagonaldown);
-	destroy_image_if(game, &game->diagonalup);
-}
-
-static void	destroy_mlx(t_game *game)
-{
-	if (!game || !game->mlx)
-		return ;
-	if (game->win)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		game->win = NULL;
-	}
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
-	game->mlx = NULL;
-}
-
-void	free_all(t_game *game, int specifier)
-{
-	if (!game)
-		return ;
-	free_map(game->map);
-	if (specifier == 1)
-	{
-		destroy_image_if(game, &game->player_img);
-		destroy_image_if(game, &game->coin_img);
-		destroy_image_if(game, &game->chest_img);
-		destroy_image_if(game, &game->full_img);
-		destroy_image_if(game, &game->bg_img);
-		destroy_images(game);
-	}
-	destroy_mlx(game);
+	destroy_image_if(game, &game->floor.floor);
+	destroy_image_if(game, &game->floor.diag_dl);
+	destroy_image_if(game, &game->floor.diag_d);
+	destroy_image_if(game, &game->floor.diag_dr);
+	destroy_image_if(game, &game->roof.roof);
+	destroy_image_if(game, &game->roof.diag_ul);
+	destroy_image_if(game, &game->roof.diag_u);
+	destroy_image_if(game, &game->roof.diag_ur);
+	destroy_image_if(game, &game->wall.full);
+	destroy_image_if(game, &game->wall.alone);
+	destroy_image_if(game, &game->wall.left);
+	destroy_image_if(game, &game->wall.left_diag_dl);
+	destroy_image_if(game, &game->wall.left_diag_ul);
+	destroy_image_if(game, &game->wall.left_diag_r);
+	destroy_image_if(game, &game->wall.right);
+	destroy_image_if(game, &game->wall.right_diag_dr);
+	destroy_image_if(game, &game->wall.right_diag_l);
+	destroy_image_if(game, &game->wall.right_diag_ur);
+	destroy_image_if(game, &game->side.horizontal);
+	destroy_image_if(game, &game->side.vertical);
+	destroy_images2(game);
 }

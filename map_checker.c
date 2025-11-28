@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:35:07 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 10:12:14 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/28 20:18:53 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	player_position(t_game *game, char **map)
 	}
 }
 
-int	check_elements(char **map, t_direction obj, int y)
+int	check_elements(char **map, t_item obj, int y)
 {
 	int	x;
 
@@ -112,13 +112,13 @@ int	invalid_char(char **map)
 
 int	check_map(char **map, t_game *game)
 {
-	t_direction	dir;
+	t_item	items;
 
-	dir.p = 0;
-	dir.e = 0;
-	dir.c = 0;
-	if (!is_rectangular(map) || !check_map_walls(map) || !check_elements(map,
-			dir, 0) || !invalid_char(map))
+	items.p = 0;
+	items.e = 0;
+	items.c = 0;
+	if (!is_rectangular(map) || !check_map_walls(map) || !invalid_char(map)
+		|| !check_elements(map, items, 0))
 		return (0);
 	player_position(game, map);
 	if ((!is_map_solvable(map, game->map_h, game->player_x, game->player_y)))

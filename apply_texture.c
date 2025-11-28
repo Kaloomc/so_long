@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 01:07:21 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/28 19:51:02 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ void	texture_player(t_game *game, int vertical, int horizontal)
 		game->remaning_coin -= 1;
 		game->map[game->player_y][game->player_x] = '0';
 	}
-	mlx_put_image_to_window(game->mlx, game->win, game->player_img, 32
-		* game->player_x, 32 * game->player_y);
+	if (horizontal == 1)
+		mlx_put_image_to_window(game->mlx, game->win, game->player_img, 32
+			* game->player_x, 32 * game->player_y);
+	else
+		mlx_put_image_to_window(game->mlx, game->win, game->player_flip_img, 32
+			* game->player_x, 32 * game->player_y);
 }
 
 void	texture_map(t_game *game)
