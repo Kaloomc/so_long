@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:35:07 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 00:48:51 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/28 10:12:14 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,30 @@ int	check_map_walls(char **map)
 	return (1);
 }
 
+int	invalid_char(char **map)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x] && map[y][x] != '\n')
+		{
+			if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != 'E'
+				&& map[y][x] != 'C' && map[y][x] != 'P')
+			{
+				ft_printf("Error\nInvalid Character\n");
+				return (0);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+
 int	check_map(char **map, t_game *game)
 {
 	t_direction	dir;
@@ -94,7 +118,7 @@ int	check_map(char **map, t_game *game)
 	dir.e = 0;
 	dir.c = 0;
 	if (!is_rectangular(map) || !check_map_walls(map) || !check_elements(map,
-			dir, 0))
+			dir, 0) || !invalid_char(map))
 		return (0);
 	player_position(game, map);
 	if ((!is_map_solvable(map, game->map_h, game->player_x, game->player_y)))

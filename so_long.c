@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 01:11:41 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/28 09:48:35 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,15 @@ int	start(t_game *game)
 	return (1);
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	t_game	game;
 
 	game.remaning_coin = 0;
 	game.step = 0;
-	get_map("map/map2.ber", &game);
+	if (ac != 2)
+		return (0);
+	get_map(av[1], &game);
 	if (!game.map)
 		return (1);
 	if (!start(&game))

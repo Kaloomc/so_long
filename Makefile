@@ -5,32 +5,42 @@
 #                                                     +:+ +:+         +:+      #
 #    By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/28 00:46:42 by fgarnier          #+#    #+#              #
-#    Updated: 2025/11/28 00:47:22 by fgarnier         ###   ########.fr        #
+#    Created: 2025/11/28 09:54:52 by fgarnier          #+#    #+#              #
+#    Updated: 2025/11/28 09:58:24 by fgarnier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME        = so_long
 
-NAME = so_long
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror -Imlx -I. -Ignl -Ift_printf
 
-SRC = so_long.c map_checker.c map_reader.c\
-        load_texture.c apply_texture_wall.c \
-        apply_texture_diagonal.c apply_texture.c \
-        unload_texture.c floodfill.c\
-        gnl/get_next_line.c gnl/get_next_line_utils.c
+MLX_DIR     = mlx
+MLX_LIB     = $(MLX_DIR)/libmlx.a
+MLX_FLAGS   = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
-MLX_DIR = mlx
-PRINTF_DIR = ft_printf
+PRINTF_DIR  = ft_printf
+PRINTF_LIB  = $(PRINTF_DIR)/libftprintf.a
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -I$(MLX_DIR) -I$(PRINTF_DIR)
+SRCS        = so_long.c \
+              load_texture.c \
+              unload_texture.c \
+              apply_texture.c \
+              apply_texture_wall.c \
+              apply_texture_diagonal.c \
+              map_checker.c \
+              map_reader.c \
+              floodfill.c \
+              gnl/get_next_line.c \
+              gnl/get_next_line_utils.c
 
-LIBS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -L$(PRINTF_DIR) -lftprintf
 
+OBJS        = $(SRCS:.c=.o)
 
-OBJ = $(SRC:.c=.o)
+all: mlx $(PRINTF_LIB) $(NAME)
 
-all: mlx printf $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(PRINTF_LIB) $(MLX_FLAGS) -o $(NAME)
 
 mlx:
 	if [ ! -d "$(MLX_DIR)" ]; then \
@@ -38,24 +48,22 @@ mlx:
 	fi
 	make -C $(MLX_DIR)
 
-printf:
+$(PRINTF_LIB):
 	make -C $(PRINTF_DIR)
-	
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
-	make -C $(MLX_DIR) clean
-	make -C $(PRINTF_DIR) clean
+	rm -f $(OBJS)
+	make clean -C $(PRINTF_DIR)
+	if [ -d "$(MLX_DIR)" ]; then make clean -C $(MLX_DIR); fi
 
 fclean: clean
 	rm -f $(NAME)
-	make -C $(PRINTF_DIR) fclean
+	make fclean -C $(PRINTF_DIR)
+
 
 re: fclean all
 
-.PHONY: all clean fclean re mlx printf
+.PHONY: all clean fclean re mlx
