@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 20:17:20 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/11/30 16:02:06 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,11 @@ typedef struct s_game
 	int			map_w;
 	int			map_h;
 
-	int			win_w;
-	int			win_h;
-
 	int			player_x;
 	int			player_y;
 	void		*player_img;
 	void		*player_flip_img;
 	int			step;
-	int			total_coin;
 	int			remaning_coin;
 	void		*coin_img;
 	void		*chest_img;
@@ -81,6 +77,7 @@ typedef struct s_game
 
 int				get_line_nb(char *file_name);
 void			get_map(char *file_name, t_game *game);
+long			get_time_ms(void);
 
 void			load_wall(t_game *game, int *w, int *h);
 void			load_roof_floor_side(t_game *game, int *w, int *h);
