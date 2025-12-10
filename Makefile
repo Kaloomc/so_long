@@ -6,7 +6,7 @@
 #    By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/28 09:54:52 by fgarnier          #+#    #+#              #
-#    Updated: 2025/11/28 20:16:31 by fgarnier         ###   ########.fr        #
+#    Updated: 2025/12/10 19:38:56 by fgarnier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ PRINTF_DIR  = ft_printf
 PRINTF_LIB  = $(PRINTF_DIR)/libftprintf.a
 
 SRCS        = so_long.c \
+              utils.c \
               load_texture.c  \
 			  load_texture2.c  \
 			  load.c  \
@@ -36,7 +37,8 @@ SRCS        = so_long.c \
               map_reader.c \
               floodfill.c \
               gnl/get_next_line.c \
-              gnl/get_next_line_utils.c
+              gnl/get_next_line_utils.c \
+			  move_physics.c
 
 
 OBJS        = $(SRCS:.c=.o)

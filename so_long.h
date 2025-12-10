@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/30 16:02:06 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:00:12 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@
 # include <X11/keysym.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <sys/time.h>
+
+# define TILE_SIZE 32
+// Dimensions EXACTES de ton nouveau XPM
+# define PLAYER_WIDTH 24
+# define PLAYER_HEIGHT 28
+
+// Vitesse de déplacement
+# define SPEED 3
 
 typedef struct s_direction
 {
@@ -59,9 +68,17 @@ typedef struct s_game
 
 	int			player_x;
 	int			player_y;
+
+	double		px;
+	double		py;
+
 	void		*player_img;
 	void		*player_flip_img;
+
 	int			step;
+	int			last_grid_x;
+	int			last_grid_y;
+
 	int			remaning_coin;
 	void		*coin_img;
 	void		*chest_img;
@@ -73,11 +90,27 @@ typedef struct s_game
 	t_side		side;
 	t_diagonal	diagonal;
 	t_corner	corner;
+
+	int			key_w;
+	int			key_a;
+	int			key_s;
+	int			key_d;
+	long long	last_move_time;
 }				t_game;
 
 int				get_line_nb(char *file_name);
 void			get_map(char *file_name, t_game *game);
-long			get_time_ms(void);
+
+long long		get_time(void);
+int				key_press(int keycode, t_game *game);
+int				key_release(int keycode, t_game *game);
+int				game_loop(t_game *game);
+
+void			move_player(t_game *game, int keycode);
+int				close_window(t_game *game);
+void			check_interaction(t_game *game);
+int				can_move_to(t_game *game, double new_x, double new_y);
+int				is_wall_pixel(t_game *game, double x, double y);
 
 void			load_wall(t_game *game, int *w, int *h);
 void			load_roof_floor_side(t_game *game, int *w, int *h);

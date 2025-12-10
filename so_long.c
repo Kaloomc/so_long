@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 19:21:04 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 19:14:51 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ int	start(t_game *game)
 		free_all(game, 0);
 		return (0);
 	}
+	game->key_w = 0;
+	game->key_a = 0;
+	game->key_s = 0;
+	game->key_d = 0;
+	game->last_move_time = get_time();
 	return (1);
 }
 
@@ -91,8 +96,10 @@ int	main(int ac, char **av)
 		return (1);
 	texture_map(&game);
 	texture_player(&game, 0, 0);
-	mlx_hook(game.win, 2, 1L << 0, update, &game);
+	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
+	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);
+	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
