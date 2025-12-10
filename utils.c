@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:25 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 19:56:40 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:14:22 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,57 +50,74 @@ int	key_release(int keycode, t_game *game)
 
 int	game_loop(t_game *game)
 {
-	long long now = get_time();
-	// On update plus souvent (ex: toutes les 16ms = ~60fps) pour que ce soit fluide
+	long long now;
+	double move_step;
+	int i;
+
+	now = get_time();
 	if (now - game->last_move_time < 16)
 		return (0);
 
-	double new_px = game->px;
-	double new_py = game->py;
 	int has_moved = 0;
 
-	// Calcul de la future position
-	if (game->key_w)
+	// --- GESTION DE L'AXE Y (Haut/Bas) ---
+	if (game->key_w || game->key_s)
 	{
-		new_py -= SPEED;
-		has_moved = 1;
+		move_step = (game->key_s - game->key_w) * SPEED; // Vaut -3 ou +3
+
+		// On tente de bouger pixel par pixel pour coller au mur
+		// On boucle 'SPEED' fois (ex: 3 fois)
+		i = 0;
+		while (i < SPEED)
+		{
+			// On essaie d'avancer de 1 pixel dans la direction voulue
+			double next_y = game->py + (move_step > 0 ? 1 : -1);
+
+			if (can_move_to(game, game->px, next_y))
+			{
+				game->py = next_y;
+				has_moved = 1;
+			}
+			else
+				break ; // Mur touché ! On arrête d'avancer
+			i++;
+		}
 	}
-	if (game->key_s)
+
+	// --- GESTION DE L'AXE X (Gauche/Droite) ---
+	if (game->key_a || game->key_d)
 	{
-		new_py += SPEED;
-		has_moved = 1;
-	}
-	if (game->key_a)
-	{
-		new_px -= SPEED;
-		has_moved = 1;
-	}
-	if (game->key_d)
-	{
-		new_px += SPEED;
-		has_moved = 1;
+		move_step = (game->key_d - game->key_a) * SPEED; // Vaut -3 ou +3
+
+		i = 0;
+		while (i < SPEED)
+		{
+			double next_x = game->px + (move_step > 0 ? 1 : -1);
+
+			if (can_move_to(game, next_x, game->py))
+			{
+				game->px = next_x;
+				has_moved = 1;
+			}
+			else
+				break ;
+			i++;
+		}
 	}
 
 	if (has_moved)
 	{
-		// On teste X et Y séparément pour permettre de "glisser" contre les murs
-		if (can_move_to(game, new_px, game->py))
-			game->px = new_px;
-		if (can_move_to(game, game->px, new_py))
-			game->py = new_py;
-
 		check_interaction(game);
-
-		// RENDER
-		// 1. Redessiner toute la map (pour effacer la trace du joueur)
 		texture_map(game);
 
-		// 2. Dessiner le joueur à sa position précise (cast en int pour mlx)
+		// Choix du sprite
 		void *img = game->player_img;
-		// Sens du regard
+		if (game->key_a)
+			img = game->player_flip_img;
+		else if (game->key_d)
+			img = game->player_img;
 		mlx_put_image_to_window(game->mlx, game->win, img, (int)game->px,
 			(int)game->py);
-
 		game->last_move_time = now;
 	}
 	return (0);
