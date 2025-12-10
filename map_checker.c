@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:35:07 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 20:01:00 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:55:42 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ void	player_position(t_game *game, char **map)
 				game->player_x = x;
 				game->player_y = y;
 				game->px = (game->player_x * 32) + 5;
-				game->py = (game->player_y * 32) + 12;
+				game->py = (game->player_y * 32) + 4;
 				game->last_grid_x = game->player_x;
 				game->last_grid_y = game->player_y;
+				game->velocity_y = 0.0;
+				game->is_grounded = 1;
 				return ;
 			}
 			x++;

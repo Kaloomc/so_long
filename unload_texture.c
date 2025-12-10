@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:25:38 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 20:08:44 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:52:00 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ void	destroy_images(t_game *game)
 	destroy_image_if(game, &game->wall.right_diag_ur);
 	destroy_image_if(game, &game->side.horizontal);
 	destroy_image_if(game, &game->side.vertical);
+	destroy_image_if(game, &game->bg_player_img);
 	destroy_images2(game);
 }

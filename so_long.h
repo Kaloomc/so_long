@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 20:00:12 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:50:27 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 // Dimensions EXACTES de ton nouveau XPM
 # define PLAYER_WIDTH 24
 # define PLAYER_HEIGHT 28
+# define GRAVITY 0.5
+# define JUMP_FORCE -9.0
 
 // Vitesse de déplacement
-# define SPEED 3
+# define SPEED 4
 
 typedef struct s_direction
 {
@@ -71,9 +73,12 @@ typedef struct s_game
 
 	double		px;
 	double		py;
+	double		velocity_y;
+	int			is_grounded;
 
 	void		*player_img;
 	void		*player_flip_img;
+	void		*bg_player_img;
 
 	int			step;
 	int			last_grid_x;
@@ -146,5 +151,6 @@ int				check_solvable(char **map, int h, int px, int py);
 int				is_rectangular(char **map);
 int				is_map_solvable(char **map, int map_h, int player_x,
 					int player_y);
+int				count_collectibles(char **map);
 
 #endif

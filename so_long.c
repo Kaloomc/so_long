@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 19:14:51 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 21:00:26 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,6 @@ int	close_window(t_game *game)
 	free_all(game, 1);
 	(void)game;
 	exit(0);
-	return (0);
-}
-
-void	move_player(t_game *game, int keycode)
-{
-	int	directionh;
-	int	directionv;
-
-	directionh = 0;
-	directionv = 0;
-	if (keycode == 100)
-		directionh = 1;
-	else if (keycode == 97)
-		directionh = -1;
-	else if (keycode == 119)
-		directionv = -1;
-	else if (keycode == 115)
-		directionv = 1;
-	else
-		return ;
-	if (game->map[game->player_y + directionv][game->player_x
-		+ directionh] == '1')
-		return ;
-	game->step += 1;
-	ft_printf("%d\n", game->step);
-	texture_player(game, directionv, directionh);
-	if (game->remaning_coin == 0
-		&& (game->map[game->player_y][game->player_x] == 'E'))
-		close_window(game);
-}
-
-int	update(int keycode, void *param)
-{
-	if (keycode == 65307)
-		close_window(param);
-	move_player(param, keycode);
 	return (0);
 }
 
@@ -83,7 +47,6 @@ int	main(int ac, char **av)
 {
 	t_game	game;
 
-	game.remaning_coin = 0;
 	game.step = 0;
 	if (ac != 2)
 		return (0);
@@ -94,8 +57,8 @@ int	main(int ac, char **av)
 		return (1);
 	if (!load_img(&game))
 		return (1);
+	game.remaning_coin = count_collectibles(game.map);
 	texture_map(&game);
-	texture_player(&game, 0, 0);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);
 	mlx_hook(game.win, 17, 0, close_window, &game);

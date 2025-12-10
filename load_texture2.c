@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/11/28 20:05:23 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/10 20:50:52 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	load_extra(t_game *game, int *w, int *h)
 {
 	game->bg_img = mlx_xpm_file_to_image(game->mlx, "textures/background.xpm",
 			w, h);
+	game->bg_player_img = mlx_xpm_file_to_image(game->mlx,
+			"textures/background_player.xpm", w, h);
 	game->player_img = mlx_xpm_file_to_image(game->mlx, "textures/Idle.xpm", w,
 			h);
 	game->player_flip_img = mlx_xpm_file_to_image(game->mlx,
