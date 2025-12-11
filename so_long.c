@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 21:00:26 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 00:17:01 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ int	start(t_game *game)
 	game->key_s = 0;
 	game->key_d = 0;
 	game->last_move_time = get_time();
+	game->frame = 0;
+	game->last_anim_time = get_time();
+	game->facing_left = 0;
+	game->is_running = 0;
+	game->is_landing = 0;
+	game->is_jumping = 0;
 	return (1);
 }
 

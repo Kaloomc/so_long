@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 20:50:27 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 00:57:13 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@
 # include <sys/time.h>
 
 # define TILE_SIZE 32
-// Dimensions EXACTES de ton nouveau XPM
 # define PLAYER_WIDTH 24
 # define PLAYER_HEIGHT 28
 # define GRAVITY 0.5
 # define JUMP_FORCE -9.0
+# define ANIM_DELAY 120
 
 // Vitesse de déplacement
-# define SPEED 4
+# define SPEED 3
 
 typedef struct s_direction
 {
@@ -76,8 +76,20 @@ typedef struct s_game
 	double		velocity_y;
 	int			is_grounded;
 
-	void		*player_img;
-	void		*player_flip_img;
+	void		*player_idle[5];
+	void		*player_idle_flip[5];
+	void		*player_run[6];
+	void		*player_run_flip[6];
+	void		*player_jump[3];
+	void		*player_ground[2];
+
+	int			is_running;
+	int			facing_left;
+	int			is_jumping;
+	int			is_landing;
+
+	int			frame;
+	long long	last_anim_time;
 	void		*bg_player_img;
 
 	int			step;

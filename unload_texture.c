@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:25:38 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 20:52:00 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 01:00:42 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	destroy_images3(t_game *game)
 	destroy_image_if(game, &game->corner.ur_diag_dl);
 	destroy_image_if(game, &game->corner.ur);
 	destroy_image_if(game, &game->corner.up_diag_dr);
-	destroy_image_if(game, &game->player_img);
-	destroy_image_if(game, &game->player_flip_img);
+	// destroy_image_if(game, &game->player_img);
+	// destroy_image_if(game, &game->player_flip_img);
 	destroy_image_if(game, &game->coin_img);
 	destroy_image_if(game, &game->chest_img);
 	destroy_image_if(game, &game->bg_img);
