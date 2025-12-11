@@ -6,13 +6,13 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:25:38 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 01:00:42 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 12:23:46 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	destroy_image_if(t_game *game, void **img)
+void	destroy_image_if(t_game *game, void **img)
 {
 	if (!game || !img || !*img)
 		return ;
@@ -37,12 +37,11 @@ void	destroy_images3(t_game *game)
 	destroy_image_if(game, &game->corner.ur_diag_dl);
 	destroy_image_if(game, &game->corner.ur);
 	destroy_image_if(game, &game->corner.up_diag_dr);
-	// destroy_image_if(game, &game->player_img);
-	// destroy_image_if(game, &game->player_flip_img);
 	destroy_image_if(game, &game->coin_img);
 	destroy_image_if(game, &game->chest_img);
 	destroy_image_if(game, &game->bg_img);
-	destroy_image_if(game, &game->wall.alone);
+	destroy_player_anim(game);
+	destroy_player_jump_ground(game);
 }
 
 void	destroy_images2(t_game *game)

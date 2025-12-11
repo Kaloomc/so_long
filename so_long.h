@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 00:57:13 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:20:09 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define PLAYER_HEIGHT 28
 # define GRAVITY 0.5
 # define JUMP_FORCE -9.0
-# define ANIM_DELAY 120
+# define ANIM_DELAY 100
 
 // Vitesse de déplacement
 # define SPEED 3
@@ -81,7 +81,9 @@ typedef struct s_game
 	void		*player_run[6];
 	void		*player_run_flip[6];
 	void		*player_jump[3];
+	void		*player_jump_flip[3];
 	void		*player_ground[2];
+	void		*player_ground_flip[2];
 
 	int			is_running;
 	int			facing_left;
@@ -129,17 +131,22 @@ void			check_interaction(t_game *game);
 int				can_move_to(t_game *game, double new_x, double new_y);
 int				is_wall_pixel(t_game *game, double x, double y);
 
-void			load_wall(t_game *game, int *w, int *h);
-void			load_roof_floor_side(t_game *game, int *w, int *h);
-void			load_corner(t_game *game, int *w, int *h);
-void			load_diagonal(t_game *game, int *w, int *h);
-void			load_diagonal2(t_game *game, int *w, int *h);
-void			load_extra(t_game *game, int *w, int *h);
+void			load_wall(t_game *game);
+void			load_roof_floor_side(t_game *game);
+void			load_corner(t_game *game);
+void			load_diagonal(t_game *game);
+void			load_extra(t_game *game);
 int				load_img(t_game *game);
+void			load_player_anim(t_game *game);
+void			load_player_anim_jump_ground(t_game *game);
+void			load_player_anim_run(t_game *game);
+void			load_texture(t_game *game, void **img, char *path);
 
 void			destroy_images(t_game *game);
+void			destroy_image_if(t_game *game, void **img);
 void			free_all(t_game *game, int specifier);
-
+void			destroy_player_anim(t_game *game);
+void			destroy_player_jump_ground(t_game *game);
 void			texture_map(t_game *game);
 
 void			*get_wall_texture(t_game *game, int x, int y);
@@ -153,6 +160,11 @@ void			*get_wall_3_sides(t_game *game, t_direction adj);
 void			*get_wall_4_sides_2diag(t_game *game, t_direction adj);
 void			*get_wall_4_sides(t_game *game, t_direction adj);
 
+void			load_texture(t_game *game, void **img, char *path);
+int				key_release(int keycode, t_game *game);
+int				key_press(int keycode, t_game *game);
+double			get_step_x(double move_x);
+double			get_step_y(double velocity_y);
 void			texture_player(t_game *game, int vertical, int horizontal);
 void			free_all(t_game *game, int specifier);
 void			free_map(char **map);
@@ -164,5 +176,6 @@ int				is_rectangular(char **map);
 int				is_map_solvable(char **map, int map_h, int player_x,
 					int player_y);
 int				count_collectibles(char **map);
+void			update_player_area(t_game *game);
 
 #endif

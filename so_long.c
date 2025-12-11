@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 00:17:01 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:56:37 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,20 @@ int	close_window(t_game *game)
 {
 	free_all(game, 1);
 	(void)game;
-	exit(0);
 	return (0);
+}
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = (unsigned char)c;
+		i++;
+	}
+	return (s);
 }
 
 int	start(t_game *game)
@@ -56,6 +68,7 @@ int	main(int ac, char **av)
 	game.step = 0;
 	if (ac != 2)
 		return (0);
+	ft_memset(&game, 0, sizeof(t_game));
 	get_map(av[1], &game);
 	if (!game.map)
 		return (1);

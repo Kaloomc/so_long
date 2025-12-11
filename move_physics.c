@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:37:27 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/10 20:57:07 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/11 12:22:03 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	can_move_to(t_game *game, double new_x, double new_y)
 		return (0);
 	return (1);
 }
+
 void	check_interaction(t_game *game)
 {
 	int		center_x;
