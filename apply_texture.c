@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 10:42:20 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:27:50 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ static void	*get_area_texture(t_game *game, int x, int y)
 	if (c == '1')
 		return (get_wall_texture(game, x, y));
 	else if (c == 'C')
-		return (game->coin_img);
+		return (game->coin_img[game->coins_frame % 4]);
 	else if (c == 'E')
 		return (game->chest_img);
 	return (game->bg_img);
 }
 
-void	update_player_area(t_game *game)
+void	update_player_area(t_game *game,double px, double py)
 {
 	int	x;
 	int	y;
 	int	gx;
 	int	gy;
 
-	gx = (int)(game->px + 12) / 32;
-	gy = (int)(game->py + 14) / 32;
+	gx = (int)(px + 12) / 32;
+	gy = (int)(py + 14) / 32;
 	y = gy - 1;
 	while (y <= gy + 1)
 	{
@@ -55,7 +55,7 @@ void	update_player_area(t_game *game)
 void	*get_exit_and_coin_texture(t_game *game, int x, int y)
 {
 	if (game->map[y][x] == 'C')
-		return (game->coin_img);
+		return (game->coin_img[game->coins_frame % 4]);
 	if (game->map[y][x] == 'E')
 		return (game->chest_img);
 	game->player_x = x;

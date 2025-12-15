@@ -6,7 +6,7 @@
 #    By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/28 09:54:52 by fgarnier          #+#    #+#              #
-#    Updated: 2025/12/11 12:56:28 by fgarnier         ###   ########.fr        #
+#    Updated: 2025/12/13 18:17:30 by fgarnier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,10 @@ SRCS        = so_long.c \
               floodfill.c \
               move_physics.c \
 			  get_key.c \
+			  coin.c \
+			  enemy_logic.c \
+			  load_enemy.c \
+			  enemy_renderer.c \
               $(GNL_DIR)/get_next_line.c \
               $(GNL_DIR)/get_next_line_utils.c
 

@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:25 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 12:51:44 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:28:30 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	update_anim(t_game *game)
 		}
 		else if (game->frame >= max_frames)
 			game->frame = 0;
+		update_coin_animation(game);
 		game->last_anim_time = now;
 	}
 }
@@ -141,14 +142,13 @@ int	game_loop(t_game *game)
 	update_anim(game);
 	moved = handle_vertical_move(game);
 	moved += handle_horizontal_move(game);
-	if (moved || game->velocity_y != 0.0 || 1)
-	{
-		check_interaction(game);
-		img = get_player_sprite(game);
-		update_player_area(game);
-		mlx_put_image_to_window(game->mlx, game->win, img, (int)game->px,
-			(int)game->py);
-		game->last_move_time = now;
-	}
+	check_interaction(game);
+	update_enemies(game);
+	img = get_player_sprite(game);
+	update_player_area(game,game->px, game->py);
+	render_enemies(game);
+	mlx_put_image_to_window(game->mlx, game->win, img, (int)game->px,
+		(int)game->py);
+	game->last_move_time = now;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 13:20:46 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 16:07:50 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,12 @@ void	load_player_anim(t_game *game)
 		"textures/idle/Idle_04_flip.xpm");
 	load_texture(game, &game->player_idle_flip[4],
 		"textures/idle/Idle_05_flip.xpm");
+}
+
+void	load_coin_anim(t_game *game)
+{
+	load_texture(game, &game->coin_img[0], "textures/coins/01.xpm");
+	load_texture(game, &game->coin_img[1], "textures/coins/02.xpm");
+	load_texture(game, &game->coin_img[2], "textures/coins/03.xpm");
+	load_texture(game, &game->coin_img[3], "textures/coins/04.xpm");
 }

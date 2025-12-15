@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 12:25:26 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 12:53:54 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 17:49:38 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	key_press(int keycode, t_game *game)
 		game->key_d = 1;
 		game->facing_left = 0;
 	}
-	if (keycode == XK_space && game->is_grounded)
+	if (keycode == XK_space)
 	{
 		game->frame = 0;
 		game->velocity_y = JUMP_FORCE;

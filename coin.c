@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load.c                                             :+:      :+:    :+:   */
+/*   coin.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/15 01:18:58 by fgarnier         ###   ########.fr       */
+/*   Created: 2025/12/13 15:50:47 by fgarnier          #+#    #+#             */
+/*   Updated: 2025/12/13 16:00:11 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	load_texture(t_game *game, void **img, char *path)
+void	update_coin_animation(t_game *game)
 {
-	int	w;
-	int	h;
+	int	y;
+	int	x;
 
-	w = 32;
-	h = 32;
-	*img = mlx_xpm_file_to_image(game->mlx, path, &w, &h);
-	if (!*img)
+	game->coins_frame++;
+	y = 0;
+	while (y < game->map_h)
 	{
-		ft_printf("Error\nFailed to load texture: %s\n", path);
-		close_window(game);
+		x = 0;
+		while (x < game->map_w)
+		{
+			if (game->map[y][x] == 'C')
+				mlx_put_image_to_window(game->mlx, game->win,
+					game->coin_img[game->coins_frame % 4], x * 32, y * 32);
+			x++;
+		}
+		y++;
 	}
-}
-
-int	load_img(t_game *game)
-{
-	load_wall(game);
-	load_roof_floor_side(game);
-	load_corner(game);
-	load_diagonal(game);
-	load_extra(game);
-	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:25:38 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 12:23:24 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 16:04:51 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,13 @@ void	destroy_player_jump_ground(t_game *game)
 		destroy_image_if(game, &game->player_ground[i]);
 		destroy_image_if(game, &game->player_ground_flip[i]);
 	}
+}
+
+void	destroy_coin_anim(t_game *game)
+{
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+		destroy_image_if(game, &game->coin_img[i]);
 }

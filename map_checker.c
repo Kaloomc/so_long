@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:35:07 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 11:43:08 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:20:24 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	invalid_char(char **map)
 		while (map[y][x] && map[y][x] != '\n')
 		{
 			if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != 'E'
-				&& map[y][x] != 'C' && map[y][x] != 'P')
+				&& map[y][x] != 'C' && map[y][x] != 'P' && map[y][x] != 'X')
 			{
 				ft_printf("Error\nInvalid Character\n");
 				return (0);

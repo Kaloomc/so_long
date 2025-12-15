@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/11 13:19:57 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/13 18:13:40 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ void	load_extra(t_game *game)
 {
 	load_texture(game, &game->bg_img, "textures/background.xpm");
 	load_texture(game, &game->bg_player_img, "textures/background_player.xpm");
-	load_texture(game, &game->coin_img, "textures/coin.xpm");
 	load_texture(game, &game->chest_img, "textures/chest.xpm");
+	load_coin_anim(game);
 	load_player_anim(game);
 	load_player_anim_run(game);
 	load_player_anim_jump_ground(game);
+	load_enemy_textures(game);
 }

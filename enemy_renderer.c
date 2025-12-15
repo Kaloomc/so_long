@@ -1,0 +1,67 @@
+#include "so_long.h"
+
+static void	update_enemy_anim(t_enemy *e)
+{
+	long long	now;
+	int			max;
+
+	now = get_time();
+	if (now - e->last_anim_time > 120)
+	{
+		e->frame++;
+		if (e->is_running)
+			max = ENEMY_RUN_FRAMES;
+		else
+			max = ENEMY_IDLE_FRAMES;
+		if (e->frame >= max)
+			e->frame = 0;
+		e->last_anim_time = now;
+	}
+}
+
+static void	*get_enemy_sprite(t_game *game, t_enemy *e)
+{
+	if (e->is_running)
+	{
+		if (!e->facing_left)
+			return (game->enemy_run_flip[e->frame]);
+		return (game->enemy_run[e->frame]);
+	}
+	else
+	{
+		if (!e->facing_left)
+			return (game->enemy_idle[e->frame]);
+		return (game->enemy_idle_flip[e->frame]);
+	}
+}
+
+void	render_enemies(t_game *game)
+{
+	t_enemy	*e;
+	void	*img;
+
+	e = game->enemies;
+	while (e)
+	{
+		update_enemy_anim(e);
+		update_player_area(game, e->x, e->y);
+		img = get_enemy_sprite(game, e);
+		if (img)
+			mlx_put_image_to_window(game->mlx, game->win, img, (int)e->x,
+				(int)e->y);
+		e = e->next;
+	}
+}
+
+void	free_enemies(t_game *game)
+{
+	t_enemy *tmp;
+
+	while (game->enemies)
+	{
+		tmp = game->enemies;
+		game->enemies = game->enemies->next;
+		free(tmp);
+	}
+	// Ajoute ici les boucles pour destroy_image les tableaux enemy_idle/run
+}
