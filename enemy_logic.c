@@ -12,6 +12,24 @@
 
 #include "so_long.h"
 
+static int	check_player_collision(t_game *game, t_enemy *e)
+{
+	double	p_left = game->px;
+	double	p_right = game->px + PLAYER_WIDTH;
+	double	p_top = game->py;
+	double	p_bottom = game->py + PLAYER_HEIGHT;
+
+	double	e_left = e->x + 4;
+	double	e_right = e->x + 28;
+	double	e_top = e->y + 4;
+	double	e_bottom = e->y + 28;
+
+	if (p_left < e_right && p_right > e_left
+		&& p_top < e_bottom && p_bottom > e_top)
+		return (1);
+	return (0);
+}
+
 int	can_enemy_move_to(t_game *game, double new_x, double new_y)
 {
 	double	left;
@@ -118,8 +136,8 @@ static void	enemy_ai_think(t_enemy *e)
 		}
 		else
 		{
-			e->facing_left = (e->move_dir == -1);
 			e->move_dir = (rand_choice == 1) ? -1 : 1;
+			e->facing_left = (e->move_dir == -1);
 			e->is_running = 1;
 		}
 		e->ai_timer = 60 + (rand() % 120);
@@ -138,6 +156,11 @@ void	update_enemies(t_game *game)
 		{
 			enemy_ai_think(e);
 			enemy_ai_move(game, e);
+		}
+		if (check_player_collision(game, e))
+		{
+			ft_printf("Game Over: Touched by enemy!\n");
+			close_window(game);
 		}
 		e = e->next;
 	}

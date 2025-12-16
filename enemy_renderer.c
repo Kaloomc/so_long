@@ -24,14 +24,14 @@ static void	*get_enemy_sprite(t_game *game, t_enemy *e)
 	if (e->is_running)
 	{
 		if (!e->facing_left)
-			return (game->enemy_run_flip[e->frame]);
-		return (game->enemy_run[e->frame]);
+			return (game->enemy_run_flip[e->frame % ENEMY_RUN_FRAMES]);
+		return (game->enemy_run[e->frame % ENEMY_RUN_FRAMES]);
 	}
 	else
 	{
 		if (!e->facing_left)
-			return (game->enemy_idle[e->frame]);
-		return (game->enemy_idle_flip[e->frame]);
+			return (game->enemy_idle_flip[e->frame % ENEMY_IDLE_FRAMES]);
+		return (game->enemy_idle[e->frame% ENEMY_IDLE_FRAMES]);
 	}
 }
 
