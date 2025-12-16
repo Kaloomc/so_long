@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 17:44:01 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/15 15:04:43 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/17 00:17:38 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ typedef struct s_direction
 	int				ur;
 	int				dr;
 }					t_direction;
+
+typedef struct s_hitbox
+{
+	double			left;
+	double			right;
+	double			top;
+	double			bottom;
+}					t_hitbox;
 
 typedef struct s_flood
 {
@@ -143,48 +151,92 @@ typedef struct s_game
 	long long		last_move_time;
 }					t_game;
 
-void				init_enemies(t_game *game);
-void				load_enemy_textures(t_game *game);
-void				render_enemies(t_game *game);
-void				update_enemies(t_game *game);
-void				free_enemies(t_game *game);
+/* --- so_long.c --- */
+int					close_window(t_game *game);
 
-void				update_coin_animation(t_game *game);
+/* --- map_reader.c --- */
 int					get_line_nb(char *file_name);
 void				get_map(char *file_name, t_game *game);
 
+/* --- map_checker.c --- */
+int					check_map(char **map, t_game *game);
+int					check_map_walls(char **map);
+int					check_elements(char **map, t_item dir, int y);
+int					is_rectangular(char **map);
+int					count_collectibles(char **map);
+
+/* --- floodfill.c --- */
+int					check_solvable(char **map, int h, int px, int py);
+int					is_map_solvable(char **map, int map_h, int player_x,
+						int player_y);
+
+/* --- utils.c --- */
 long long			get_time(void);
+int					game_loop(t_game *game);
+void				display_steps_on_screen(t_game *game);
+
+/* --- get_key.c --- */
 int					key_press(int keycode, t_game *game);
 int					key_release(int keycode, t_game *game);
-int					game_loop(t_game *game);
 
+/* --- move_physics.c --- */
 void				move_player(t_game *game, int keycode);
-int					close_window(t_game *game);
-void				check_interaction(t_game *game);
 int					can_move_to(t_game *game, double new_x, double new_y);
-int					can_enemy_move_to(t_game *game, double new_x, double new_y);
 int					is_wall_pixel(t_game *game, double x, double y);
+void				check_interaction(t_game *game);
+double				get_step_x(double move_x);
+double				get_step_y(double velocity_y);
 
+/* --- player_logic.c (ou main_loop.c) --- */
+void				handle_vertical_move(t_game *game);
+int					handle_horizontal_move(t_game *game);
+void				update_anim(t_game *game);
+void				*get_player_sprite(t_game *game);
+void				update_player_area(t_game *game, double x, double y);
+
+/* --- coin.c --- */
+void				update_coin_animation(t_game *game);
+
+/* --- load.c --- */
+void				load_img(t_game *game);
+
+/* --- load_texture.c --- */
+void				load_texture(t_game *game, void **img, char *path);
 void				load_wall(t_game *game);
 void				load_roof_floor_side(t_game *game);
 void				load_corner(t_game *game);
 void				load_diagonal(t_game *game);
+
+/* --- load_texture2.c --- */
 void				load_extra(t_game *game);
-int					load_img(t_game *game);
+
+/* --- load_animation.c --- */
 void				load_player_anim(t_game *game);
 void				load_coin_anim(t_game *game);
 void				load_player_anim_jump_ground(t_game *game);
 void				load_player_anim_run(t_game *game);
-void				load_texture(t_game *game, void **img, char *path);
 
-void				destroy_images(t_game *game);
-void				destroy_image_if(t_game *game, void **img);
-void				free_all(t_game *game, int specifier);
-void				destroy_player_anim(t_game *game);
-void				destroy_player_jump_ground(t_game *game);
+/* --- load_enemy.c --- */
+void				init_enemies(t_game *game);
+void				load_enemy_textures(t_game *game);
+void				load_enemy_idle(t_game *game);
+void				load_enemy_run(t_game *game);
+
+/* --- enemy_logic.c --- */
+void				update_enemies(t_game *game);
+int					check_ground_ahead(t_game *game, t_enemy *e, double next_x);
+void				enemy_physics_y(t_game *game, t_enemy *e);
+int					check_player_collision(t_game *game, t_enemy *e);
+int					can_enemy_move_to(t_game *game, double new_x, double new_y);
+
+/* --- enemy_renderer.c --- */
+void				render_enemies(t_game *game);
+
+/* --- apply_texture.c --- */
 void				texture_map(t_game *game);
+void				texture_player(t_game *game, int vertical, int horizontal);
 
-void				destroy_coin_anim(t_game *game);
+/* --- get_texture_wall*.c --- */
 void				*get_wall_texture(t_game *game, int x, int y);
 void				*get_corner_1_side(t_game *game, t_direction adj);
 void				*get_corner_2_sides(t_game *game, t_direction adj);
@@ -196,22 +248,17 @@ void				*get_wall_3_sides(t_game *game, t_direction adj);
 void				*get_wall_4_sides_2diag(t_game *game, t_direction adj);
 void				*get_wall_4_sides(t_game *game, t_direction adj);
 
-void				load_texture(t_game *game, void **img, char *path);
-int					key_release(int keycode, t_game *game);
-int					key_press(int keycode, t_game *game);
-double				get_step_x(double move_x);
-double				get_step_y(double velocity_y);
-void				texture_player(t_game *game, int vertical, int horizontal);
+/* --- unload.c --- */
 void				free_all(t_game *game, int specifier);
 void				free_map(char **map);
-int					check_map_walls(char **map);
-int					check_elements(char **map, t_item dir, int y);
-int					check_map(char **map, t_game *game);
-int					check_solvable(char **map, int h, int px, int py);
-int					is_rectangular(char **map);
-int					is_map_solvable(char **map, int map_h, int player_x,
-						int player_y);
-int					count_collectibles(char **map);
-void				update_player_area(t_game *game, double x, double y);
+void				destroy_images(t_game *game);
+void				destroy_image_if(t_game *game, void **img);
+
+/* --- unload_animation.c --- */
+void				destroy_player_anim(t_game *game);
+void				destroy_player_jump_ground(t_game *game);
+void				destroy_coin_anim(t_game *game);
+void				destroy_enemy_texture(t_game *game);
+void				free_enemies(t_game *game);
 
 #endif

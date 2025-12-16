@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   player_logic.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:25 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/13 18:28:30 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/16 23:49:19 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,31 @@ void	update_anim(t_game *game)
 	}
 }
 
-static int	handle_vertical_move(t_game *game)
+void	vertical_logic(t_game *game, double step_y)
+{
+	if (can_move_to(game, game->px, game->py + step_y))
+	{
+		game->py += step_y;
+		game->is_grounded = 0;
+	}
+	else
+	{
+		if (game->velocity_y > 0.0 && game->is_grounded == 0)
+		{
+			game->is_grounded = 1;
+			game->is_landing = 1;
+			game->frame = 0;
+		}
+		game->velocity_y = 0.0;
+	}
+}
+
+void	handle_vertical_move(t_game *game)
 {
 	double	step_y;
 	int		pixels_to_move;
 	int		i;
-	int		has_moved;
 
-	has_moved = 0;
 	game->velocity_y += 0.5;
 	if (game->velocity_y > 10.0)
 		game->velocity_y = 10.0;
@@ -52,29 +69,12 @@ static int	handle_vertical_move(t_game *game)
 	i = 0;
 	while (i < pixels_to_move)
 	{
-		if (can_move_to(game, game->px, game->py + step_y))
-		{
-			game->py += step_y;
-			game->is_grounded = 0;
-			has_moved = 1;
-		}
-		else
-		{
-			if (game->velocity_y > 0.0 && game->is_grounded == 0)
-			{
-				game->is_grounded = 1;
-				game->is_landing = 1;
-				game->frame = 0;
-			}
-			game->velocity_y = 0.0;
-			break ;
-		}
+		vertical_logic(game, step_y);
 		i++;
 	}
-	return (has_moved);
 }
 
-static int	handle_horizontal_move(t_game *game)
+int	handle_horizontal_move(t_game *game)
 {
 	double	move_x;
 	double	step_x;
@@ -123,32 +123,4 @@ void	*get_player_sprite(t_game *game)
 	else
 		img = game->player_idle[game->frame % 5];
 	return (img);
-}
-
-int	game_loop(t_game *game)
-{
-	long long	now;
-	int			moved;
-	int			was_running;
-	void		*img;
-
-	now = get_time();
-	if (now - game->last_move_time < 16)
-		return (0);
-	was_running = game->is_running;
-	game->is_running = game->key_a || game->key_d;
-	if (was_running != game->is_running)
-		game->frame = 0;
-	update_anim(game);
-	moved = handle_vertical_move(game);
-	moved += handle_horizontal_move(game);
-	check_interaction(game);
-	update_enemies(game);
-	img = get_player_sprite(game);
-	update_player_area(game,game->px, game->py);
-	render_enemies(game);
-	mlx_put_image_to_window(game->mlx, game->win, img, (int)game->px,
-		(int)game->py);
-	game->last_move_time = now;
-	return (0);
 }

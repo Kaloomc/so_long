@@ -6,26 +6,27 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 15:02:57 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/15 16:03:19 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:02:02 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int	check_player_collision(t_game *game, t_enemy *e)
+int	check_player_collision(t_game *game, t_enemy *e)
 {
-	double	p_left = game->px;
-	double	p_right = game->px + PLAYER_WIDTH;
-	double	p_top = game->py;
-	double	p_bottom = game->py + PLAYER_HEIGHT;
+	t_hitbox	player;
+	t_hitbox	enemy;
 
-	double	e_left = e->x + 4;
-	double	e_right = e->x + 28;
-	double	e_top = e->y + 4;
-	double	e_bottom = e->y + 28;
-
-	if (p_left < e_right && p_right > e_left
-		&& p_top < e_bottom && p_bottom > e_top)
+	player.left = game->px;
+	player.right = game->px + PLAYER_WIDTH;
+	player.top = game->py;
+	player.bottom = game->py + PLAYER_HEIGHT;
+	enemy.left = e->x + 4;
+	enemy.right = e->x + 28;
+	enemy.top = e->y + 4;
+	enemy.bottom = e->y + 28;
+	if (player.left < enemy.right && player.right > enemy.left
+		&& player.top < enemy.bottom && player.bottom > enemy.top)
 		return (1);
 	return (0);
 }
@@ -52,7 +53,7 @@ int	can_enemy_move_to(t_game *game, double new_x, double new_y)
 	return (1);
 }
 
-static int	check_ground_ahead(t_game *game, t_enemy *e, double next_x)
+int	check_ground_ahead(t_game *game, t_enemy *e, double next_x)
 {
 	int	grid_x;
 	int	grid_y;
@@ -67,7 +68,23 @@ static int	check_ground_ahead(t_game *game, t_enemy *e, double next_x)
 	return (game->map[grid_y][grid_x] == '1');
 }
 
-static void	enemy_physics_y(t_game *game, t_enemy *e)
+static void	enemy_velocity_y(t_game *game, t_enemy *e, double step)
+{
+	if (can_enemy_move_to(game, e->x, e->y + step + 1))
+	{
+		e->y += step;
+		e->is_grounded = 0;
+	}
+	else
+	{
+		if (e->velocity_y > 0)
+			e->is_grounded = 1;
+		e->velocity_y = 0;
+		return ;
+	}
+}
+
+void	enemy_physics_y(t_game *game, t_enemy *e)
 {
 	double	step;
 	int		pixels;
@@ -76,92 +93,14 @@ static void	enemy_physics_y(t_game *game, t_enemy *e)
 	e->velocity_y += 0.5;
 	if (e->velocity_y > 10.0)
 		e->velocity_y = 10.0;
-	step = (e->velocity_y > 0) ? 1.0 : -1.0;
+	step = 1.0;
+	if (e->velocity_y <= 0)
+		step = -1.0;
 	pixels = (int)abs((int)e->velocity_y);
 	i = 0;
 	while (i < pixels)
 	{
-		if (can_enemy_move_to(game, e->x, e->y + step + 1))
-		{
-			e->y += step;
-			e->is_grounded = 0;
-		}
-		else
-		{
-			if (e->velocity_y > 0)
-				e->is_grounded = 1;
-			e->velocity_y = 0;
-			break ;
-		}
+		enemy_velocity_y(game, e, step);
 		i++;
-	}
-}
-
-static void	enemy_ai_move(t_game *game, t_enemy *e)
-{
-	int		i;
-	double	next_x;
-
-	if (e->move_dir == 0)
-		return ;
-	i = 0;
-	while (i < (int)ENEMY_SPEED)
-	{
-		next_x = e->x + (e->move_dir > 0 ? 1 : -1);
-		if (can_enemy_move_to(game, next_x, e->y) && check_ground_ahead(game, e,
-				next_x))
-			e->x = next_x;
-		else
-		{
-			e->move_dir = 0;
-			e->is_running = 0;
-			break ;
-		}
-		i++;
-	}
-}
-
-static void	enemy_ai_think(t_enemy *e)
-{
-	int	rand_choice;
-
-	e->ai_timer--;
-	if (e->ai_timer <= 0)
-	{
-		rand_choice = rand() % 3;
-		if (rand_choice == 0)
-		{
-			e->move_dir = 0;
-			e->is_running = 0;
-		}
-		else
-		{
-			e->move_dir = (rand_choice == 1) ? -1 : 1;
-			e->facing_left = (e->move_dir == -1);
-			e->is_running = 1;
-		}
-		e->ai_timer = 60 + (rand() % 120);
-	}
-}
-
-void	update_enemies(t_game *game)
-{
-	t_enemy *e;
-
-	e = game->enemies;
-	while (e)
-	{
-		enemy_physics_y(game, e);
-		if (e->is_grounded)
-		{
-			enemy_ai_think(e);
-			enemy_ai_move(game, e);
-		}
-		if (check_player_collision(game, e))
-		{
-			ft_printf("Game Over: Touched by enemy!\n");
-			close_window(game);
-		}
-		e = e->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/13 18:13:40 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:07:52 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	load_extra(t_game *game)
 	load_player_anim(game);
 	load_player_anim_run(game);
 	load_player_anim_jump_ground(game);
-	load_enemy_textures(game);
+	load_enemy_idle(game);
+	load_enemy_run(game);
 }

@@ -48,6 +48,24 @@ void	destroy_player_jump_ground(t_game *game)
 	}
 }
 
+void	destroy_enemy_texture(t_game *game)
+{
+	int	i;
+
+	i = -1;
+	while (++i < ENEMY_IDLE_FRAMES)
+	{
+		destroy_image_if(game, &game->enemy_idle[i]);
+		destroy_image_if(game, &game->enemy_idle_flip[i]);
+	}
+	i = -1;
+	while (++i < ENEMY_RUN_FRAMES)
+	{
+		destroy_image_if(game, &game->enemy_run[i]);
+		destroy_image_if(game, &game->enemy_run_flip[i]);
+	}
+}
+
 void	destroy_coin_anim(t_game *game)
 {
 	int	i;

@@ -6,7 +6,7 @@
 #    By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/28 09:54:52 by fgarnier          #+#    #+#              #
-#    Updated: 2025/12/13 18:17:30 by fgarnier         ###   ########.fr        #
+#    Updated: 2025/12/16 23:48:10 by fgarnier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ MLX_FLAGS   = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
 # Sources
 SRCS        = so_long.c \
-              utils.c \
+              main_loop.c \
               load.c \
               load_texture.c \
               load_texture2.c \
@@ -57,6 +57,9 @@ SRCS        = so_long.c \
 			  enemy_logic.c \
 			  load_enemy.c \
 			  enemy_renderer.c \
+			  hud.c \
+			  enemy_update.c \
+			  player_logic.c \
               $(GNL_DIR)/get_next_line.c \
               $(GNL_DIR)/get_next_line_utils.c
 

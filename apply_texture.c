@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:44:18 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/13 18:27:50 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/16 19:32:50 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	*get_area_texture(t_game *game, int x, int y)
 	return (game->bg_img);
 }
 
-void	update_player_area(t_game *game,double px, double py)
+void	update_player_area(t_game *game, double px, double py)
 {
 	int	x;
 	int	y;

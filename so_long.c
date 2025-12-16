@@ -6,7 +6,7 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 15:15:15 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/13 18:13:07 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/17 00:14:14 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	start(t_game *game)
 	game->key_s = 0;
 	game->key_d = 0;
 	game->last_move_time = get_time();
-	game->frame = 0;
 	game->last_anim_time = get_time();
 	game->facing_left = 0;
 	game->is_running = 0;
@@ -70,14 +69,14 @@ int	main(int ac, char **av)
 		return (0);
 	ft_memset(&game, 0, sizeof(t_game));
 	get_map(av[1], &game);
-	init_enemies(&game);
 	if (!game.map)
 		return (1);
+	init_enemies(&game);
 	if (!start(&game))
 		return (1);
-	if (!load_img(&game))
-		return (1);
+	load_img(&game);
 	game.remaning_coin = count_collectibles(game.map);
+	game.frame = 0;
 	texture_map(&game);
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game);
 	mlx_hook(game.win, 3, 1L << 1, key_release, &game);

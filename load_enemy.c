@@ -6,13 +6,13 @@
 /*   By: fgarnier <fgarnier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 18:10:37 by fgarnier          #+#    #+#             */
-/*   Updated: 2025/12/15 15:06:24 by fgarnier         ###   ########.fr       */
+/*   Updated: 2025/12/16 23:50:39 by fgarnier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static void	load_enemy_idle(t_game *game)
+void	load_enemy_idle(t_game *game)
 {
 	load_texture(game, &game->enemy_idle[0], "textures/enemy/Idle_01.xpm");
 	load_texture(game, &game->enemy_idle[1], "textures/enemy/Idle_02.xpm");
@@ -40,7 +40,7 @@ static void	load_enemy_idle(t_game *game)
 		"textures/enemy/Idle_08_flip.xpm");
 }
 
-static void	load_enemy_run(t_game *game)
+void	load_enemy_run(t_game *game)
 {
 	load_texture(game, &game->enemy_run[0], "textures/enemy/Run_01.xpm");
 	load_texture(game, &game->enemy_run[1], "textures/enemy/Run_02.xpm");
@@ -62,20 +62,8 @@ static void	load_enemy_run(t_game *game)
 		"textures/enemy/Run_06_flip.xpm");
 }
 
-void	load_enemy_textures(t_game *game)
+static void	init_value_enemy(t_enemy *new, int x, int y)
 {
-	load_enemy_idle(game);
-	load_enemy_run(game);
-}
-
-static void	add_enemy(t_game *game, int x, int y)
-{
-	t_enemy	*new;
-	t_enemy	*tmp;
-
-	new = malloc(sizeof(t_enemy));
-	if (!new)
-		return ;
 	new->x = (x * 32);
 	new->y = (y * 32);
 	new->velocity_y = 0;
@@ -87,6 +75,17 @@ static void	add_enemy(t_game *game, int x, int y)
 	new->ai_timer = 0;
 	new->move_dir = 0;
 	new->next = NULL;
+}
+
+static void	add_enemy(t_game *game, int x, int y)
+{
+	t_enemy	*new;
+	t_enemy	*tmp;
+
+	new = malloc(sizeof(t_enemy));
+	if (!new)
+		return ;
+	init_value_enemy(new, x, y);
 	if (!game->enemies)
 		game->enemies = new;
 	else
@@ -100,8 +99,8 @@ static void	add_enemy(t_game *game, int x, int y)
 
 void	init_enemies(t_game *game)
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 
 	game->enemies = NULL;
 	y = 0;
